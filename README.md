@@ -27,6 +27,8 @@ This API is designed for generating random passwords based on specified paramete
 
 ```http
 GET /api?lowercase=true&uppercase=true&numbers=false&symbols=false&unicode=false&length=16&count=4&format=json
+OR
+https://tsprnay.github.io/PasswordGenerator/api?lowercase=true&uppercase=true&numbers=false&symbols=false&unicode=false&length=16&count=4&format=json
 ```
 
 ### Example Response
