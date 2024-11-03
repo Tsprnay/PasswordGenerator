@@ -20,11 +20,28 @@ function generatePasswords(options) {
     const unicode = "äöüßéèàçñ中日韓हिन्दीالعربيةабвгдеёжзийклмнопрстуфхцчшщъыьэюяΩΨΣΔαβγδεζηθικλμνξοπρστυφχψω";
 
     let charset = "";
-    if (options.lowercase) charset += lowercase;
-    if (options.uppercase) charset += uppercase;
-    if (options.numbers) charset += numbers;
-    if (options.symbols) charset += symbols;
-    if (options.unicode) charset += unicode;
+    let selectedCategories = [];
+
+    if (options.lowercase) {
+        charset += lowercase;
+        selectedCategories.push(lowercase);
+    }
+    if (options.uppercase) {
+        charset += uppercase;
+        selectedCategories.push(uppercase);
+    }
+    if (options.numbers) {
+        charset += numbers;
+        selectedCategories.push(numbers);
+    }
+    if (options.symbols) {
+        charset += symbols;
+        selectedCategories.push(symbols);
+    }
+    if (options.unicode) {
+        charset += unicode;
+        selectedCategories.push(unicode);
+    }
 
     if (charset === "" || options.passwordLength < 1 || options.passwordCount < 1) {
         return "Wrong parameters!";
@@ -33,10 +50,26 @@ function generatePasswords(options) {
     let passwords = [];
     for (let i = 0; i < options.passwordCount; i++) {
         let password = "";
-        for (let j = 0; j < options.passwordLength; j++) {
-            const randomIndex = Math.floor(Math.random() * charset.length);
-            password += charset[randomIndex];
+
+        if (options.passwordLength >= selectedCategories.length) {
+            for (const category of selectedCategories) {
+                const randomIndex = Math.floor(Math.random() * category.length);
+                password += category[randomIndex];
+            }
+
+            for (let j = selectedCategories.length; j < options.passwordLength; j++) {
+                const randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+            }
+
+            password = password.split('').sort(() => Math.random() - 0.5).join('');
+        } else {
+            for (let j = 0; j < options.passwordLength; j++) {
+                const randomIndex = Math.floor(Math.random() * charset.length);
+                password += charset[randomIndex];
+            }
         }
+
         passwords.push(password);
     }
 
