@@ -1,9 +1,9 @@
 function getParamsFromURL() {
     const params = new URLSearchParams(window.location.search);
     return {
-        lowercase: params.get("lowercase") === "false" ? false : true,
-        uppercase: params.get("uppercase") === "false" ? false : true,
-        numbers: params.get("numbers") === "false" ? false : true,
+        lowercase: params.get("lowercase") === "true",
+        uppercase: params.get("uppercase") === "true",
+        numbers: params.get("numbers") === "true",
         symbols: params.get("symbols") === "true",
         unicode: params.get("unicode") === "true",
         passwordLength: parseInt(params.get("length")) || 12,
@@ -75,7 +75,7 @@ function generatePasswords(options) {
 
     switch (options.format) {
         case "json":
-            return `{${passwords.map(p => `"${p}"`).join(", ")}}`;
+            return JSON.stringify(passwords);
         case "csv":
             return passwords.join(",\n");
         case "yaml":
@@ -89,6 +89,4 @@ function generatePasswords(options) {
 const options = getParamsFromURL();
 const passwords = generatePasswords(options);
 
-const pre = document.createElement('pre');
-pre.textContent = passwords;
-document.body.appendChild(pre);
+document.body.innerText = passwords;
